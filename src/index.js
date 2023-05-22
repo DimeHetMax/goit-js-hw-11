@@ -1,6 +1,8 @@
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
-import SimpleLightbox from "simplelightbox";
+
 import "simplelightbox/dist/simple-lightbox.min.css";
+import SimpleLightbox from "simplelightbox";
+
 const axios = require('axios').default;
 Notify.init({
     width: '350px',
@@ -92,11 +94,13 @@ function renderHTML({data}){
     }).join(" ");
 
     updateMarkUp(photoCard)
+    // refresh()
 }
 
 function addMarkUpOnLoadButton(){
    const pageNumber = updatePage()
    getPictures(searchQuery, pageNumber).then(renderHTML)
+//    refresh()
 }
 
 function updateMarkUp(markup){
@@ -112,7 +116,6 @@ function updatePage(){
     return page +=1
 }
 
-let gallery = new SimpleLightbox('.gallery .large-img-link',{captionsData: "alt", captionDelay: 250});
-gallery.on('show.simplelightbox', function (e) {
-	console.log(e);
+let gallery = new SimpleLightbox('.gallery .large-img-link');
+gallery.on('show.simplelightbox', function () {
 });
