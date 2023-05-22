@@ -37,21 +37,23 @@ function onButton(event){
         return
     }
     clearPictureList()
-
+    page = 1
     refs.loadButton.classList.remove("hidden");
-    getPictures(searchQuery, page).then(renderHTML).catch(console.log)
+    getPictures(searchQuery, page)
+    .then(renderHTML)
+    
     refs.form.elements.searchQuery.value = "";
 }
-
-function updatePage(){
-    return page +=1
-}
-
 async function getPictures(query, pageNum){
     try{
         return await axios.get(`${URL}?key=${KEY}&q=${query}&page=${pageNum}&per_page=39&orientation=horizontal&image_type=photo`);
     }catch(error){
-       return onError(error)
+        refs.loadButton.classList.add("hidden");
+        if(error.message === "Request failed with status code 400"){
+          Notify.failure("We're sorry, but you've reached the end of search results.")
+        }else{
+            onError(error)
+        }
     }
 }
 
@@ -62,7 +64,7 @@ function renderHTML({data}){
         return Notify.info("Sorry, there are no images matching your search query. Please try again.")
     }
     Notify.success(`Hooray! We found ${data.totalHits} images.`)
-    console.log(hits);
+
    const photoCard = hits.map(({webformatURL, largeImageURL, tags, likes, views, comments, downloads}) =>{
         return `
         <div class="photo-card">
@@ -90,7 +92,7 @@ function renderHTML({data}){
 
 function addMarkUpOnLoadButton(){
    const pageNumber = updatePage()
-   getPictures(searchQuery, pageNumber).then(renderHTML).catch(console.log)
+   getPictures(searchQuery, pageNumber).then(renderHTML)
 }
 
 function updateMarkUp(markup){
@@ -100,6 +102,8 @@ function clearPictureList(){
     refs.galleryEl.innerHTML = "";
 }
 function onError(error){
-    console.log(error);
     Notify.failure(`${error}`);
+}
+function updatePage(){
+    return page +=1
 }
