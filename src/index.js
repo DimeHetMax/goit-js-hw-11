@@ -50,7 +50,7 @@ function onButton(event){
 }
 async function getPictures(query, pageNum){
     try{
-        return await axios.get(`${URL}?key=${KEY}&q=${query}&page=${pageNum}&per_page=39&orientation=horizontal&image_type=photo`);
+        return await axios.get(`${URL}?key=${KEY}&q=${query}&page=${pageNum}&per_page=39&orientation=horizontal&image_type=photo&safesearch=true`);
     }catch(error){
         refs.loadButton.classList.add("hidden");
         if(error.message === "Request failed with status code 400"){
@@ -94,13 +94,12 @@ function renderHTML({data}){
     }).join(" ");
 
     updateMarkUp(photoCard)
-    // refresh()
 }
 
 function addMarkUpOnLoadButton(){
    const pageNumber = updatePage()
    getPictures(searchQuery, pageNumber).then(renderHTML)
-//    refresh()
+   refresh()
 }
 
 function updateMarkUp(markup){
@@ -117,5 +116,4 @@ function updatePage(){
 }
 
 let gallery = new SimpleLightbox('.gallery .large-img-link');
-gallery.on('show.simplelightbox', function () {
-});
+gallery.on('show.simplelightbox', function () {});
