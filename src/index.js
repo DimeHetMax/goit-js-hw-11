@@ -1,4 +1,6 @@
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
+import SimpleLightbox from "simplelightbox";
+import "simplelightbox/dist/simple-lightbox.min.css";
 const axios = require('axios').default;
 Notify.init({
     width: '350px',
@@ -68,7 +70,9 @@ function renderHTML({data}){
    const photoCard = hits.map(({webformatURL, largeImageURL, tags, likes, views, comments, downloads}) =>{
         return `
         <div class="photo-card">
-        <img src="${webformatURL}" alt="${tags}" loading="lazy" />
+        <a href="${largeImageURL}" class="large-img-link">
+            <img src="${webformatURL}" alt="${tags}" loading="lazy" />
+        </a>
         <div class="info">
             <p class="info-item">
             <b>Likes: ${likes}</b>
@@ -107,3 +111,8 @@ function onError(error){
 function updatePage(){
     return page +=1
 }
+
+let gallery = new SimpleLightbox('.gallery .large-img-link',{captionsData: "alt", captionDelay: 250});
+gallery.on('show.simplelightbox', function (e) {
+	console.log(e);
+});
