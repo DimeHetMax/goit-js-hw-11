@@ -25,14 +25,13 @@ function onButton(event){
     }
     clearPictureList()
     page = 1
-    refs.loadButton.classList.remove("hidden");
-
     getPictures(searchQuery, page)
     .then(renderHTML)
     .then(initializeLightbox)
     .then(smootheSlide)
     .catch(onError)
     
+    refs.loadButton.classList.remove("visually-hidden");
     refs.form.elements.searchQuery.value = "";
 }
 
@@ -119,7 +118,7 @@ function smootheSlideLoadMore(){
 }
 
 export function hideLoadButton(){
-    refs.loadButton.classList.add("hidden");
+    refs.loadButton.classList.add("visually-hidden");
 }
 export function onError(error){
     Notify.failure(`${error}`);
